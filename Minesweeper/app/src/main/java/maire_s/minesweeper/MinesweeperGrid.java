@@ -27,15 +27,15 @@ public class MinesweeperGrid extends View {
             Height = height;
             BombCount = bombCount;
             Map = new boolean[Height][Width];
-            DistanceMap = new char[Height][Width];
+            DistanceMap = new int[Height][Width];
             Cover = new boolean[Height][Width];
             this._generateMap();
         }
 
         private void _incrementDistance(int x, int y)
         {
-            if (x > 0 && x < Width &&
-                    y > 0 && y < Height)
+            if (x >= 0 && x < Width &&
+                    y >= 0 && y < Height && DistanceMap[y][x] < 9)
             {
                 DistanceMap[y][x]++;
             }
@@ -55,21 +55,24 @@ public class MinesweeperGrid extends View {
                 int x = (int)(Math.random() * Width);
                 int y = (int)(Math.random() * Height);
 
-                if (DistanceMap[y][x] == -1)
+                if (DistanceMap[y][x] > 8)
                 {
                     ++i;
                     continue;
                 }
-                _incrementDistance(x - 1, y);
-                _incrementDistance(x - 1, y + 1);
-                _incrementDistance(x, y + 1);
-                _incrementDistance(x + 1, y + 1);
-                _incrementDistance(x + 1, y);
-                _incrementDistance(x + 1, y - 1);
-                _incrementDistance(x, y - 1);
-                _incrementDistance(x - 1, y - 1);
-                DistanceMap[y][x] = (char)-1;
+                DistanceMap[y][x] = 9;
             }
+            for (int y = 0; y < Height; ++y)
+                for (int x = 0; x < Width; ++x) if (DistanceMap[y][x] > 8) {
+                    _incrementDistance(x - 1, y);
+                    _incrementDistance(x - 1, y + 1);
+                    _incrementDistance(x, y + 1);
+                    _incrementDistance(x + 1, y + 1);
+                    _incrementDistance(x + 1, y);
+                    _incrementDistance(x + 1, y - 1);
+                    _incrementDistance(x, y - 1);
+                    _incrementDistance(x - 1, y - 1);
+                }
         }
 
         public final int BombCount;
@@ -77,7 +80,7 @@ public class MinesweeperGrid extends View {
         public final int Height;
         public boolean[][] Map;
         public boolean[][] Cover;
-        public char[][] DistanceMap;
+        public int[][] DistanceMap;
     }
     private Board _board;
     public MinesweeperGrid(Context context, AttributeSet attrs) {
