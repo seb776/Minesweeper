@@ -17,19 +17,44 @@
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/activity_vertical_margin">
-<maire_s.minesweeper.MinesweeperGrid
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
-        <TextView
-            android:text="Hello World!"
+        <maire_s.minesweeper.MinesweeperGrid
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content" />
+        <GridLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/textViewA" />
-        <TextView
-            android:text="Hello World!"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/textViewB" />
+            android:rowCount="2" android:columnCount="2">
+            <TextView
+                android:text="0 mines."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewA"
+                android:layout_row="0"
+                android:layout_gravity="right"/>
+            <TextView
+                android:text="0 mines marked."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewB"
+                android:layout_row="0"
+                android:layout_gravity="right"/>
+            <Button
+                android:text="Restart"
+                android:layout_row="1"
+                android:layout_column="0"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:width="200sp"
+                android:height="150sp"/>
+            <Button
+                android:text="Mode"
+                android:layout_row="1"
+                android:layout_column="1"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:width="200sp"
+                android:height="150sp"/>
+        </GridLayout>
     </LinearLayout>
 
 </RelativeLayout>

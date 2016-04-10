@@ -19,8 +19,14 @@ import android.widget.LinearLayout;
  * Created by maire_s on 04/04/2016.
  */
 public class MinesweeperGrid extends View {
+    enum EMarkingMode
+    {
+        MARK_BOMB,
+        UNCOVER
+    };
     private class Board
     {
+
         public Board(int width, int height, int bombCount)
         {
             Width = width;
@@ -30,6 +36,8 @@ public class MinesweeperGrid extends View {
             DistanceMap = new int[Height][Width];
             Cover = new boolean[Height][Width];
             this._generateMap();
+            MarkingMode = EMarkingMode.UNCOVER;
+            GameFinished = false;
         }
 
         private void _incrementDistance(int x, int y)
@@ -81,6 +89,8 @@ public class MinesweeperGrid extends View {
         public boolean[][] Map;
         public boolean[][] Cover;
         public int[][] DistanceMap;
+        EMarkingMode MarkingMode;
+        boolean GameFinished;
     }
     private Board _board;
     public MinesweeperGrid(Context context, AttributeSet attrs) {
@@ -92,7 +102,6 @@ public class MinesweeperGrid extends View {
     {
         //this.setBackgroundColor(Color.argb(255, 0, 0, 0));
         this.ResetGame(10, 10, 20);
-        Log.d("BLOOP", "ZBRAAAA");
     }
 
     public void ResetGame(int width, int height, int bombCount)
@@ -142,15 +151,24 @@ public class MinesweeperGrid extends View {
         }
     }
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        final int width = getMeasuredWidth();
+        final int height = getMeasuredHeight();
+        final int size = (width < height ? width : height);
+        setMeasuredDimension(size, size);
+    }
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
-
-        int tileWidth = this.getWidth() / _board.Width;
-        int tileHeight = this.getHeight() / _board.Height;
-        int tileSize = (tileWidth < tileHeight ? tileWidth : tileHeight);
-        int xidx = (int)(event.getX() / tileSize);
-        int yidx = (int)(event.getY() / tileSize);
-        _board.Cover[yidx][xidx] = false;
-        this.invalidate();
+        if (!_board.GameFinished) {
+            int tileWidth = this.getWidth() / _board.Width;
+            int tileHeight = this.getHeight() / _board.Height;
+            int tileSize = (tileWidth < tileHeight ? tileWidth : tileHeight);
+            int xidx = (int) (event.getX() / tileSize);
+            int yidx = (int) (event.getY() / tileSize);
+            _board.Cover[yidx][xidx] = false;
+            this.invalidate();
+        }
         return super.onTouchEvent(event);
     }
 }
