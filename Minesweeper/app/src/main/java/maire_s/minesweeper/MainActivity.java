@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         _toastLose.cancel(); // To avoid the toast to stay after restarting
         _minesweeper.ResetGame(10,10,20);
         _buttonMode.setClickable(true);
+        SetMarkedMines(0);
     }
 
     public void onButtonClickMode(View view) {
